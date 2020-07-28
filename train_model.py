@@ -63,8 +63,6 @@ def train_model(model, data_loaders, optimizer, alpha, num_epochs=500):
                 model.eval()
 
             running_loss = 0.0
-            running_corrects_img = 0
-            running_corrects_txt = 0
             # Iterate over data.
             for imgs, txts, labels in data_loaders[phase]:
                 # imgs = imgs.to(device)
@@ -97,9 +95,6 @@ def train_model(model, data_loaders, optimizer, alpha, num_epochs=500):
                     loss = calc_loss(view1_feature, view2_feature, view1_predict, view2_predict,
                                      labels, labels, alpha)
 
-                    img_preds = view1_predict
-                    txt_preds = view2_predict
-
                     # backward + optimize only if in training phase
                     if phase == 'train':
                         loss.backward()
@@ -107,8 +102,6 @@ def train_model(model, data_loaders, optimizer, alpha, num_epochs=500):
 
                 # statistics
                 running_loss += loss.item()
-                running_corrects_img += torch.sum(torch.argmax(img_preds, dim=1) == torch.argmax(labels, dim=1))
-                running_corrects_txt += torch.sum(torch.argmax(txt_preds, dim=1) == torch.argmax(labels, dim=1))
 
             epoch_loss = running_loss / len(data_loaders[phase].dataset)
             if phase == 'train':
