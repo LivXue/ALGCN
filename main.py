@@ -23,7 +23,7 @@ if __name__ == '__main__':
     if dataset == 'mirflickr':
         alpha = 2e-1
         gamma = 0.5
-        MAX_EPOCH = 15
+        MAX_EPOCH = 30
         batch_size = 100
         lr = 5e-5
         betas = (0.5, 0.999)
@@ -31,7 +31,15 @@ if __name__ == '__main__':
     elif dataset == 'NUS-WIDE-TC21':
         alpha = 2e-1
         gamma = 0.5
-        MAX_EPOCH = 15
+        MAX_EPOCH = 40
+        batch_size = 1024
+        lr = 5e-5
+        betas = (0.5, 0.999)
+        t = 0.4
+    elif dataset == 'MS-COCO':
+        alpha = 2e-1
+        gamma = 0.5
+        MAX_EPOCH = 50
         batch_size = 1024
         lr = 5e-5
         betas = (0.5, 0.999)

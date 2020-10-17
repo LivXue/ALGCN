@@ -40,6 +40,21 @@ def get_loader(path, batch_size):
     label_train = loadmat(path + "train_lab.mat")['train_lab']
     label_test = loadmat(path + "test_lab.mat")['test_lab']
 
+    # missing labels
+    # data_len = img_train.shape[0]
+    # missing = int(data_len * 0.9)
+    # label_train[0:missing] = 0
+
+    # corrupting labels
+    # noise_rates = [0.9, 0.9]
+    # chances = np.random.uniform(size=label_train.shape)
+    # condlist = [np.logical_and(label_train == 0, chances >= noise_rates[0]),
+    #             np.logical_and(label_train == 0, chances < noise_rates[0]),
+    #             np.logical_and(label_train == 1, chances >= noise_rates[1]),
+    #             np.logical_and(label_train == 1, chances < noise_rates[1])]
+    # choicelist = [0, 1, 1, 0]
+    # label_train = np.select(condlist, choicelist)
+
     imgs = {'train': img_train, 'test': img_test}
     texts = {'train': text_train, 'test': text_test}
     labels = {'train': label_train, 'test': label_test}
@@ -49,7 +64,7 @@ def get_loader(path, batch_size):
     shuffle = {'train': True, 'test': False}
 
     dataloader = {x: DataLoaderX(dataset[x], batch_size=batch_size,
-                                shuffle=shuffle[x], num_workers=0) for x in ['train', 'test']}
+                                 shuffle=shuffle[x], num_workers=0) for x in ['train', 'test']}
 
     img_dim = img_train.shape[1]
     text_dim = text_train.shape[1]
