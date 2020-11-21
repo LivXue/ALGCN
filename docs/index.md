@@ -13,8 +13,8 @@ engine. Most existing methods mainly project data of different modalities into a
  branch to transform instances of different modalities into a common representation space. Secondly, we adopt Graph 
  Convolutional Network (GCN) to learn inter-dependent classifiers in the label representation learning branch. In 
  addition, a novel adaptive correlation matrix is proposed to efficiently explore and preserve the semantic structure 
- of labels in a data-driven manner. Comprehensive experimental results on {\color{red}three benchmark datasets, 
- NUS-WIDE, MIRFlickr and MS-COCO}, demonstrate the superiority of ALGCN, compared with the state-of-the-art methods in 
+ of labels in a data-driven manner. Comprehensive experimental results on three benchmark datasets, 
+ NUS-WIDE, MIRFlickr and MS-COCO, demonstrate the superiority of ALGCN, compared with the state-of-the-art methods in 
  cross-modal retrieval.</p>
 
 <h1 align = "center">Motivation</h1>
@@ -73,7 +73,7 @@ structure and bridging the modality gap, we introduce a novel joint-training fra
 representation learning branch and a label representation learning branch, which is able to preserve the cross-modal 
 semantic correlations among instances and mine the latent semantic structure of labels. In addition, an adaptive 
 correlation matrix is proposed to dynamically exploit the rich semantic relations between labels in a data-driven 
-manner, which can bring more generality to adapt to cross-modal data. Extensive experiments on two widely-used benchmark
+manner, which can bring more generality to adapt to cross-modal data. Extensive experiments on three widely-used benchmark
  datasets have demonstrated that ALGCN can achieve superior cross-modal retrieval performance compared to 
  state-of-the-art methods. </p>
 
