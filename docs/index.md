@@ -2,7 +2,20 @@
 
 <h1 align = "center">Abstract</h1> 
 
-<p style="text-align:justify">Cross-modal retrieval takes the instance of one modality as the query to retrieval relevant instances of other modalities. The core of cross-modal retrieval is how to project data of different modalities into a common representation space where the content similarity between different types of data can be directly measured. However, the existing approaches typically treat  each label as an independent individual, and ignore the underlying semantic structure of labels. In this paper, we propose an end-to-end adaptive label-aware graph convolutional network (ALGCN) by designing both the instance representation learning branch and the label representation learning branch in the common representation space, which can obtain modality-invariant and discriminative representations for cross-modal retrieval. First, we construct an instance representation learning branch to transform instances of different modalities into a common representation space. Second, we adopt Graph Convolutional Network (GCN) to learn inter-dependent classifiers which are applied to obtain discriminative and modality-invariant representations for cross-modal retrieval. In addition, a novel adaptive correlation matrix is proposed to efficiently explore and preserve the semantic structure of labels in a data-driven manner. Comprehensive experimental results on two public datasets NUS-WIDE and MIRFlickr demonstrate the superiority of ALGCN, compared to the state-of-the-art  methods in cross-modal retrieval.</p>
+<p style="text-align:justify">The cross-modal retrieval task has raised continuous attention in recent years with the increasing scale 
+of multi-modal data, which has broad application prospects including multimedia data management and intelligent search 
+engine. Most existing methods mainly project data of different modalities into a common representation space where label
+ information is often exploited to distinguish samples from different semantic categories. However, they typically treat 
+ each label as an independent individual and ignore the underlying semantic structure of labels. In this paper, we 
+ propose an end-to-end adaptive label-aware graph convolutional network (ALGCN) by designing both the instance 
+ representation learning branch and the label representation learning branch, which can obtain modality-invariant and 
+ discriminative representations for cross-modal retrieval. Firstly, we construct an instance representation learning 
+ branch to transform instances of different modalities into a common representation space. Secondly, we adopt Graph 
+ Convolutional Network (GCN) to learn inter-dependent classifiers in the label representation learning branch. In 
+ addition, a novel adaptive correlation matrix is proposed to efficiently explore and preserve the semantic structure 
+ of labels in a data-driven manner. Comprehensive experimental results on {\color{red}three benchmark datasets, 
+ NUS-WIDE, MIRFlickr and MS-COCO}, demonstrate the superiority of ALGCN, compared with the state-of-the-art methods in 
+ cross-modal retrieval.</p>
 
 <h1 align = "center">Motivation</h1>
 
@@ -54,5 +67,13 @@
 
 <h1 align = "center">Conclusion</h1>
 
-<p style="text-align:justify">In this paper, we propose an end-to-end Adaptive Label-aware Graph Convolutional Networks (ALGCN) to learn the common representations for cross-modal retrieval. In ALGCN, for better preserving the underlying semantic structure and bridging the modality gap, we introduce a novel joint-training framework constructed by an instance representation learning branch and a label representation learning branch, which is able to preserve the cross-modal semantic correlations among instances and mine the latent semantic structure of labels. In addition, an adaptive correlation matrix is proposed to dynamically exploit the rich semantic relations between labels in a data-driven manner, which can bring more generality to adapt to cross-modal data. Extensive experiments on two widely-used benchmark datasets have demonstrated that ALGCN can achieve superior cross-modal retrieval performance compared to state-of-the-art methods. </p>
+<p style="text-align:justify">In this paper, we propose an end-to-end Adaptive Label-aware Graph Convolutional Networks (ALGCN) to 
+learn the common representations for cross-modal retrieval. In ALGCN, for better preserving the underlying semantic 
+structure and bridging the modality gap, we introduce a novel joint-training framework constructed by an instance 
+representation learning branch and a label representation learning branch, which is able to preserve the cross-modal 
+semantic correlations among instances and mine the latent semantic structure of labels. In addition, an adaptive 
+correlation matrix is proposed to dynamically exploit the rich semantic relations between labels in a data-driven 
+manner, which can bring more generality to adapt to cross-modal data. Extensive experiments on two widely-used benchmark
+ datasets have demonstrated that ALGCN can achieve superior cross-modal retrieval performance compared to 
+ state-of-the-art methods. </p>
 
