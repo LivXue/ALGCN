@@ -73,7 +73,7 @@ structure and bridging the modality gap, we introduce a novel joint-training fra
 representation learning branch and a label representation learning branch, which is able to preserve the cross-modal 
 semantic correlations among instances and mine the latent semantic structure of labels. In addition, an adaptive 
 correlation matrix is proposed to dynamically exploit the rich semantic relations between labels in a data-driven 
-manner, which can bring more generality to adapt to cross-modal data. Extensive experiments on three widely-used benchmark
- datasets have demonstrated that ALGCN can achieve superior cross-modal retrieval performance compared to 
+manner, which can bring more generality to adapt to cross-modal data. Extensive experiments on three widely-used 
+benchmark datasets have demonstrated that ALGCN can achieve superior cross-modal retrieval performance compared to 
  state-of-the-art methods. </p>
 
