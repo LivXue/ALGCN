@@ -44,6 +44,44 @@ class GraphConvolution(nn.Module):
                + str(self.out_features) + ')'
 
 
+class SuperGCN(nn.Module):
+    def __init__(self, in_features, out_features, bias=False, neg_sample_ratio=0.2):
+        super(SuperGCN, self).__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.weight = Parameter(torch.Tensor(in_features, out_features))
+        if bias:
+            self.bias = Parameter(torch.Tensor(1, 1, out_features))
+        else:
+            self.register_parameter('bias', None)
+
+        stdv = 1. / math.sqrt(self.weight.size(1))
+        self.weight.data.uniform_(-stdv, stdv)
+        if self.bias is not None:
+            self.bias.data.uniform_(-stdv, stdv)
+
+        self.neg_sample_ratio = neg_sample_ratio
+        self.criterion = torch.nn.MSELoss()
+
+    def forward(self, input, adj, super=None):
+        if super is not None:
+            neg_samples = torch.bernoulli(self.neg_sample_ratio * torch.ones_like(adj))
+            adj_label = (super + neg_samples).clamp(max=0.5)
+            super_loss = self.criterion(adj, adj_label)
+        else:
+            super_loss = None
+
+        support = torch.matmul(input, self.weight)
+        output = torch.matmul(adj, support)
+        if self.bias is not None:
+            return output + self.bias, super_loss
+        else:
+            return output, super_loss
+
+    def __repr__(self):
+        return self.__class__.__name__ + ' (' + str(self.in_features) + ' -> ' + str(self.out_features) + ')'
+
+
 class VGGNet(nn.Module):
     def __init__(self):
         """Select conv1_1 ~ conv5_1 activation maps."""
@@ -106,10 +144,11 @@ class ALGCN(nn.Module):
         self.num_classes = num_classes
         self.gamma = gamma
 
-        self.gc1 = GraphConvolution(in_channel, 512)
-        self.gc2 = GraphConvolution(512, 512)
-        self.gc3 = GraphConvolution(512, minus_one_dim)
+        self.gc1 = SuperGCN(in_channel, minus_one_dim)
+        self.gc2 = SuperGCN(minus_one_dim, minus_one_dim)
+        self.gc3 = SuperGCN(minus_one_dim, minus_one_dim)
         self.relu = nn.LeakyReLU(0.2)
+        self.hypo = nn.Linear(3 * minus_one_dim, minus_one_dim)
 
         _adj = gen_A(num_classes, t, adj_file)
         self.A = Parameter(torch.FloatTensor(_adj), requires_grad=False)
@@ -122,16 +161,31 @@ class ALGCN(nn.Module):
         self.image_normalization_mean = [0.485, 0.456, 0.406]
         self.image_normalization_std = [0.229, 0.224, 0.225]
 
+    def get_adj_super(self):
+        #normed_inp = F.normalize(self.inp, dim=1)
+        #super_adj = normed_inp.matmul(normed_inp.T)
+        #super_adj = (super_adj > 0.4).float()
+        super_adj = self.A
+        return super_adj
+
     def forward(self, feature_img, feature_text):
         view1_feature = self.img_net(feature_img)
         view2_feature = self.text_net(feature_text)
 
+        super_adj = self.get_adj_super()
         adj = gen_adj(torch.relu(self.A + self.gamma * self.B))
-        x = self.gc1(self.inp, adj)
+        layers = []
+        x, super_loss1 = self.gc1(self.inp, adj, super_adj)
         x = self.relu(x)
-        x = self.gc2(x, adj)
+        layers.append(x)
+        x, super_loss2 = self.gc2(x, adj, super_adj)
         x = self.relu(x)
-        x = self.gc3(x, adj)
+        layers.append(x)
+        x, super_loss3 = self.gc3(x, adj, super_adj)
+        x = self.relu(x)
+        layers.append(x)
+        x = torch.cat(layers, -1)
+        x = self.hypo(x)
 
         norm_img = torch.norm(view1_feature, dim=1)[:, None] * torch.norm(x, dim=1)[None, :] + 1e-6
         norm_txt = torch.norm(view2_feature, dim=1)[:, None] * torch.norm(x, dim=1)[None, :] + 1e-6
@@ -140,7 +194,9 @@ class ALGCN(nn.Module):
         y_text = torch.matmul(view2_feature, x)
         y_img = y_img / norm_img
         y_text = y_text / norm_txt
-        return view1_feature, view2_feature, y_img, y_text, x.transpose(0, 1)
+
+        super_loss = super_loss1 + super_loss2 + super_loss3
+        return view1_feature, view2_feature, y_img, y_text, x.transpose(0, 1), super_loss
 
     def get_config_optim(self, lr):
         return [
@@ -149,6 +205,7 @@ class ALGCN(nn.Module):
             {'params': self.gc1.parameters(), 'lr': lr},
             {'params': self.gc2.parameters(), 'lr': lr},
             {'params': self.gc3.parameters(), 'lr': lr},
+            {'params': self.hypo.parameters(), 'lr': lr},
             {'params': self.inp, 'lr': lr},
             {'params': self.B, 'lr': lr * 100},
         ]

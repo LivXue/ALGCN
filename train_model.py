@@ -90,10 +90,10 @@ def train_model(model, data_loaders, optimizer, alpha, num_epochs=500):
                     optimizer.zero_grad()
 
                     # Forward
-                    view1_feature, view2_feature, view1_predict, view2_predict, _ = model(imgs, txts)
+                    view1_feature, view2_feature, view1_predict, view2_predict, _, super_loss = model(imgs, txts)
 
                     loss = calc_loss(view1_feature, view2_feature, view1_predict, view2_predict,
-                                     labels, labels, alpha)
+                                     labels, labels, alpha) + 0.5 * super_loss
 
                     # backward + optimize only if in training phase
                     if phase == 'train':
@@ -114,7 +114,7 @@ def train_model(model, data_loaders, optimizer, alpha, num_epochs=500):
                             imgs = imgs.cuda()
                             txts = txts.cuda()
                             labels = labels.float().cuda()
-                        t_view1_feature, t_view2_feature, _, _, _ = model(imgs, txts)
+                        t_view1_feature, t_view2_feature, _, _, _, _ = model(imgs, txts)
                         t_imgs.append(t_view1_feature.cpu().numpy())
                         t_txts.append(t_view2_feature.cpu().numpy())
                         t_labels.append(labels.cpu().numpy())

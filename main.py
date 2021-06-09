@@ -1,7 +1,10 @@
+import os
+
 import torch
 import torch.optim as optim
 import numpy as np
 from scipy.io import loadmat
+
 from model import ALGCN
 from train_model import train_model
 from load_data import get_loader
@@ -14,6 +17,7 @@ if __name__ == '__main__':
     # environmental setting: setting the following parameters based on your experimental environment.
     dataset = 'mirflickr'
     embedding = 'none'
+    os.environ["CUDA_VISIBLE_DEVICES"] = "2"
     # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     # data parameters
     DATA_DIR = 'data/' + dataset + '/'
@@ -88,7 +92,7 @@ if __name__ == '__main__':
         torch.save(model_ft.state_dict(), 'model/ALGCN_' + dataset + '.pth')
 
     print('...Evaluation on testing data...')
-    view1_feature, view2_feature, view1_predict, view2_predict, classifiers = model_ft(
+    view1_feature, view2_feature, view1_predict, view2_predict, classifiers, _ = model_ft(
         torch.tensor(input_data_par['img_test']).cuda(), torch.tensor(input_data_par['text_test']).cuda())
     label = input_data_par['label_test']
     view1_feature = view1_feature.detach().cpu().numpy()
