@@ -3,18 +3,6 @@
 This repository contains the author's implementation in PyTorch for the paper "Adaptive Label-aware Graph Convolutional Networks for Cross-Modal Retrieval".
 
 
-## Overview
-
-> The structures of ALGCN  
-
-<div align="center">
-    <img src="framework.jpg" width="100%" height ="100%" alt="framework.jpg" />
-</div>
-<p align = 'center'>
-    <small>The overall structure of ALGCN.</small>
-</p>
-
-
 ## Dependencies
 
 - Python (>=3.7)
