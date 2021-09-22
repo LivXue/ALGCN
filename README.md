@@ -36,3 +36,17 @@ Here we provide the implementation of ALGCN, along with datasets. The repository
   ```bash
  python main.py
 ```
+
+## Citation
+If you find our work or the code useful, please consider cite our paper using:
+```bash
+@article{qian2021adaptive,
+  title={Adaptive Label-aware Graph Convolutional Networks for Cross-Modal Retrieval},
+  author={Qian, Shengsheng and Xue, Dizhan and Fang, Quan and Xu, Changsheng},
+  journal={IEEE Transactions on Multimedia},
+  year={2021},
+  publisher={IEEE},
+  pages={1-1},
+  doi={10.1109/TMM.2021.3101642}
+}
+```
